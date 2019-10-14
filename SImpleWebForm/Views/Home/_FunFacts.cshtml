@@ -1,0 +1,26 @@
+﻿@model SimpleWebForm.Models.FunFact
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FormUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FormFunFact)
+        </th>
+    </tr>
+
+
+    <tr>
+        <td >
+            @Html.DisplayFor(modelItem => modelItem.FormUserName)
+        </td>
+        <td >
+            @Html.DisplayFor(modelItem => modelItem.FormFunFact)
+        </td>
+
+    </tr>
+
+
+</table>
