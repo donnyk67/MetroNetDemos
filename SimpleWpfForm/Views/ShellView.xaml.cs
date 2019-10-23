@@ -21,6 +21,8 @@ namespace SimpleWpfForm.Views
 
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
+            Button2.IsEnabled = true;
+
             MyFiveCards.Items.Clear();
             var rnd = new Random();
             for (int i = 0; i < 5; i++)
@@ -122,6 +124,7 @@ namespace SimpleWpfForm.Views
 
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
+            Button2.IsEnabled = false;
             var rmList = new List<string>();
 
             foreach (var i in MyFiveCards.Items)

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SimpleWpfForm.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Simple WPF Form" Height="800" Width="600">
+        Title="Simple WPF Form" Height="800" Width="525">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -23,13 +23,14 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name ="TextBlock1"  Grid.Row="1" Grid.Column="2" 
                    Grid.ColumnSpan="3" FontWeight="Bold" HorizontalAlignment="Center">
-          WPF Simple Form
+          Five Card Draw
         </TextBlock>
         <DataGrid x:Name="NewDeck" Grid.Row="2" Grid.ColumnSpan="3"
                   Grid.Column="2" HorizontalScrollBarVisibility="Visible"
@@ -61,10 +62,9 @@
         </DataGrid>
 
 
-        <Button x:Name="Button1" Grid.Row="3" Grid.Column="2"  Grid.ColumnSpan="3"
+        <Button x:Name="Button1" Grid.Row="3" Grid.Column="2"  Grid.ColumnSpan="3" Margin="5,15,5,5" Background="LightGreen"
                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=MyFiveCards}" Click="Button1_Click">
             Get me five cards please
-            <!--Command="{Binding MyFiveCards}" >Get me five cards please-->
         </Button>
 
 
@@ -127,7 +127,7 @@
         </DataGrid>
 
 
-        <Button x:Name="Button2" Grid.Row="5" Grid.Column="2"  Grid.ColumnSpan="3"
+        <Button x:Name="Button2" Grid.Row="5" Grid.Column="2"  Grid.ColumnSpan="3" Margin="5,5,5,5" Background="LightGreen"
                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=MyFiveCards}" Click="Button2_Click">
             Draw 
         </Button>
