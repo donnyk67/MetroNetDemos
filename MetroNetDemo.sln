@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "CommonLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWebApi", "SimpleWebApi\SimpleWebApi.csproj", "{5AC0D4DB-57CD-45D7-9DFD-D85841D08AC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWpfForm", "SimpleWpfForm\SimpleWpfForm.csproj", "{68A64157-5A6D-4966-8747-8EF730678624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5AC0D4DB-57CD-45D7-9DFD-D85841D08AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AC0D4DB-57CD-45D7-9DFD-D85841D08AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AC0D4DB-57CD-45D7-9DFD-D85841D08AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68A64157-5A6D-4966-8747-8EF730678624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A64157-5A6D-4966-8747-8EF730678624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A64157-5A6D-4966-8747-8EF730678624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A64157-5A6D-4966-8747-8EF730678624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

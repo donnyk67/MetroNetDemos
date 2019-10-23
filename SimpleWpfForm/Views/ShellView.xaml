@@ -1,0 +1,125 @@
+﻿<Window x:Class="SimpleWpfForm.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleWpfForm.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        Title="Simple WPF Form" Height="800" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name ="TextBlock1"  Grid.Row="1" Grid.Column="2" 
+                   Grid.ColumnSpan="3" FontWeight="Bold" HorizontalAlignment="Center">
+          WPF Simple Form
+        </TextBlock>
+        <DataGrid x:Name="NewDeck" Grid.Row="2" Grid.ColumnSpan="3"
+                  Grid.Column="2" HorizontalScrollBarVisibility="Visible"
+                  VerticalScrollBarVisibility="Visible"
+                  Height="400" BorderThickness="3" IsReadOnly="True" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+              <DataGridTextColumn  Header="Card Name" Binding="{Binding Path=CardName}" />
+                <DataGridTextColumn  Header="Suit" Binding="{Binding Path=SuitName}" />
+                <DataGridTextColumn  Header="Suit Color" Binding="{Binding Path=SuitColorName}" Foreground="Yellow">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="BLACK">
+                                    <Setter Property="Background" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="Text" Value="RED">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn  Header="Value" Binding="{Binding Path=HierarchyValue}" />
+                <DataGridTextColumn  Header="Over All Value" Binding="{Binding Path=OverAllHierarchyCardValue}" />
+                
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+
+        <Button x:Name="Button1" Grid.Row="3" Grid.Column="2"  Grid.ColumnSpan="3"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=MyFiveCards}" Click="Button1_Click">
+            Get me five cards please
+            <!--Command="{Binding MyFiveCards}" >Get me five cards please-->
+        </Button>
+
+
+
+        <DataGrid x:Name="MyFiveCards" Grid.Row="4" Grid.ColumnSpan="3"
+                  Grid.Column="2" HorizontalScrollBarVisibility="Visible"
+                  VerticalScrollBarVisibility="Visible"
+                  Height="200" BorderThickness="3" IsReadOnly="False" 
+                  AutoGenerateColumns="False"
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="Card Name" Binding="{Binding Path=CardName}" />
+                <DataGridTextColumn  Header="Suit" Binding="{Binding Path=SuitName}" />
+                <DataGridTextColumn  Header="Suit Color" Binding="{Binding Path=SuitColorName}" Foreground="Yellow">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="BLACK">
+                                    <Setter Property="Background" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="Text" Value="RED">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn  Header="Value" Binding="{Binding Path=HierarchyValue}" />
+                <DataGridTextColumn  Header="Over All Value" Binding="{Binding Path=OverAllHierarchyCardValue}" />
+
+                <DataGridTemplateColumn Header="Discard" >
+                    <DataGridTemplateColumn.CellTemplate >
+                        <DataTemplate>
+                            <CheckBox  x:Name="Discard" 
+                                IsChecked="{Binding Path=Discard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        --><!--<i:InvokeCommandAction Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />--><!--
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+
+        <Button x:Name="Button2" Grid.Row="5" Grid.Column="2"  Grid.ColumnSpan="3"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=MyFiveCards}" Click="Button2_Click">
+            Draw 
+        </Button>
+
+    </Grid>
+</Window>
