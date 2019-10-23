@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
 using CommonLibrary.PlayingCards;
 using SimpleWpfForm.ViewModels;
 
@@ -38,15 +35,8 @@ namespace SimpleWpfForm.Views
                         moveOn = true;
                         foreach (var crd in MyFiveCards.Items)
                         {
-                            
-                            if (((PlayingCard)crd).OverAllHierarchyCardValue == rndCard)
-                            {
-                                rndCard = rnd.Next(0, 52);
-                                c = NewDeck.Items[rndCard];
-                                moveOn = false;
-                                break;
-                            }
-                            else if( ((PlayingCard)crd).CardName == ((PlayingCard)c).CardName && ((PlayingCard)crd).SuitName == ((PlayingCard)c).SuitName)
+                            //Don''t accept any cards you already are holding
+                            if ( ((PlayingCard)crd).CardName == ((PlayingCard)c).CardName && ((PlayingCard)crd).SuitName == ((PlayingCard)c).SuitName)
                             {
                                 rndCard = rnd.Next(0, 52);
                                 c = NewDeck.Items[rndCard];
@@ -70,6 +60,36 @@ namespace SimpleWpfForm.Views
                     OverAllHierarchyCardValue = (c as PlayingCard).OverAllHierarchyCardValue,
                     Discard = false
                 };
+                //Default to Spades
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                path = path.Replace(@"\bin\Debug\", "");
+                var imagePath = path + @"\img\Spade.png";
+                
+
+                var switchData = h.SuitName;
+                switch (switchData)
+                {
+
+                    case "CLUBS":
+                        imagePath = path + @"\img\Club.png";
+                        break;
+                    case "HEARTS":
+                        imagePath = path + @"\img\Heart.png";
+                        break;
+                    case "DIAMONDS":
+                        imagePath = path + @"\img\Diamond.png";
+                        break;
+
+                }
+                Uri uri = new Uri(imagePath);
+                var bmp = new System.Windows.Media.Imaging.BitmapImage(uri);
+                var myImage = bmp; //System.Drawing.Image.FromFile(imagePath);
+                h.Image = myImage;
+
+
+
+
+
 
                 MyFiveCards.Items.Add(h);
                 
@@ -102,8 +122,8 @@ namespace SimpleWpfForm.Views
 
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
-            List<string> rmList = new List<string>();
-            
+            var rmList = new List<string>();
+
             foreach (var i in MyFiveCards.Items)
             {
                 var cName = (i as MyHand).CardName;
@@ -117,7 +137,7 @@ namespace SimpleWpfForm.Views
 
             foreach (var r in rmList)
             {
-                int ct = 0;
+                var ct = 0;
                 foreach (var i in MyFiveCards.Items)
                 {
                     var cName = (i as MyHand).CardName;
@@ -145,21 +165,24 @@ namespace SimpleWpfForm.Views
                         moveOn = true;
                         foreach (var crd in MyFiveCards.Items)
                         {
+                            var rmListMatch = ((PlayingCard) crd).CardName + ((PlayingCard) crd).SuitName;
+                            //Don''t accept any cards you already are holding
+                            if (((PlayingCard)crd).CardName == ((PlayingCard)c).CardName && ((PlayingCard)crd).SuitName == ((PlayingCard)c).SuitName)
+                            {
+                                rndCard = rnd.Next(0, 52);
+                                c = NewDeck.Items[rndCard];
+                                moveOn = false;
+                                break;
+                            }
+                            //Don''t accept any discarded cards
+                            if (rmListMatch == r)
+                            {
+                                rndCard = rnd.Next(0, 52);
+                                c = NewDeck.Items[rndCard];
+                                moveOn = false;
+                                break;
+                            }
 
-                            if (((PlayingCard)crd).OverAllHierarchyCardValue == rndCard)
-                            {
-                                rndCard = rnd.Next(0, 52);
-                                c = NewDeck.Items[rndCard];
-                                moveOn = false;
-                                break;
-                            }
-                            else if (((PlayingCard)crd).CardName == ((PlayingCard)c).CardName && ((PlayingCard)crd).SuitName == ((PlayingCard)c).SuitName)
-                            {
-                                rndCard = rnd.Next(0, 52);
-                                c = NewDeck.Items[rndCard];
-                                moveOn = false;
-                                break;
-                            }
 
                         }
                     }
@@ -176,6 +199,32 @@ namespace SimpleWpfForm.Views
                     OverAllHierarchyCardValue = (c as PlayingCard).OverAllHierarchyCardValue,
                     Discard = false
                 };
+
+                //Default to Spades
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                path = path.Replace(@"\bin\Debug\", "");
+                var imagePath = path + @"\img\Spade.png";
+
+
+                var switchData = h.SuitName;
+                switch (switchData)
+                {
+
+                    case "CLUBS":
+                        imagePath = path + @"\img\Club.png";
+                        break;
+                    case "HEARTS":
+                        imagePath = path + @"\img\Heart.png";
+                        break;
+                    case "DIAMONDS":
+                        imagePath = path + @"\img\Diamond.png";
+                        break;
+
+                }
+                Uri uri = new Uri(imagePath);
+                var bmp = new System.Windows.Media.Imaging.BitmapImage(uri);
+                var myImage = bmp; //System.Drawing.Image.FromFile(imagePath);
+                h.Image = myImage;
 
                 MyFiveCards.Items.Add(h);
 

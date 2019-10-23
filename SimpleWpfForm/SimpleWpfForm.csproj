@@ -121,5 +121,11 @@
       <Name>CommonLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\Club.png" />
+    <Resource Include="img\Diamond.png" />
+    <Resource Include="img\Heart.png" />
+    <Resource Include="img\Spade.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

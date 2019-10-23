@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using CommonLibrary.PlayingCardFactory;
-using CommonLibrary;
-using CommonLibrary.PlayingCardFactory;
 using CommonLibrary.PlayingCards;
-using System.Windows.Controls;
 
 
 namespace SimpleWpfForm.ViewModels
@@ -27,17 +20,14 @@ namespace SimpleWpfForm.ViewModels
             MyFiveCards = new List<MyHand>();
         }
 
-
-        
-
-
-
-
-
-
     }
     public class MyHand : PlayingCard
     {
+        public System.Windows.Media.Imaging.BitmapImage Image { get; set; }
+
         public bool Discard { get; set; }
+
     }
+
+
 }

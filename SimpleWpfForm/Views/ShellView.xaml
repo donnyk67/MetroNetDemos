@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SimpleWpfForm.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Simple WPF Form" Height="800" Width="500">
+        Title="Simple WPF Form" Height="800" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -78,6 +78,22 @@
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="Card Name" Binding="{Binding Path=CardName}" />
                 <DataGridTextColumn  Header="Suit" Binding="{Binding Path=SuitName}" />
+
+
+
+                <DataGridTemplateColumn Width="80" Header="Suit Image">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Path=Image}" d:DataContext="{d:DesignData }" 
+                                   MaxHeight="25" MaxWidth="25" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                       
+                            
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+
                 <DataGridTextColumn  Header="Suit Color" Binding="{Binding Path=SuitColorName}" Foreground="Yellow">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
@@ -100,11 +116,6 @@
                         <DataTemplate>
                             <CheckBox  x:Name="Discard" 
                                 IsChecked="{Binding Path=Discard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <!--<i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Checked">
-                                        --><!--<i:InvokeCommandAction Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />--><!--
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>-->
                             </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
