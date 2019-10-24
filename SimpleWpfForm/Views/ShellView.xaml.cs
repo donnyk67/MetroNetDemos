@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using CommonLibrary.PlayingCards;
@@ -35,22 +36,15 @@ namespace SimpleWpfForm.Views
                     while (!moveOn)
                     {
                         moveOn = true;
-                        foreach (var crd in MyFiveCards.Items)
-                        {
-                            //Don''t accept any cards you already are holding
-                            if ( ((PlayingCard)crd).CardName == ((PlayingCard)c).CardName && ((PlayingCard)crd).SuitName == ((PlayingCard)c).SuitName)
-                            {
-                                rndCard = rnd.Next(0, 52);
-                                c = NewDeck.Items[rndCard];
-                                moveOn = false;
-                                break;
-                            }
-                            
-                        }
+                        if (!MyFiveCards.Items.Cast<object>().Any(crd =>
+                            ((PlayingCard) crd).CardName == ((PlayingCard) c).CardName &&
+                            ((PlayingCard) crd).SuitName == ((PlayingCard) c).SuitName)) continue;
+                        rndCard = rnd.Next(0, 52);
+                        c = NewDeck.Items[rndCard];
+                        moveOn = false;
                     }
                    
                 }
-
                 
                 var h = new MyHand
                 {
@@ -87,14 +81,8 @@ namespace SimpleWpfForm.Views
                 var bmp = new System.Windows.Media.Imaging.BitmapImage(uri);
                 var myImage = bmp; //System.Drawing.Image.FromFile(imagePath);
                 h.Image = myImage;
-
-
-
-
-
-
                 MyFiveCards.Items.Add(h);
-                
+              
             }
             SortDataGrid(MyFiveCards, 4, ListSortDirection.Ascending);
         }
@@ -125,18 +113,7 @@ namespace SimpleWpfForm.Views
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
             Button2.IsEnabled = false;
-            var rmList = new List<string>();
-
-            foreach (var i in MyFiveCards.Items)
-            {
-                var cName = (i as MyHand).CardName;
-                var cSuit = (i as MyHand).SuitName;
-                var a = (i as MyHand).Discard;
-                if (a)
-                {
-                    rmList.Add(cName + cSuit);
-                }
-            }
+            var rmList = (from object i in MyFiveCards.Items let cName = (i as MyHand).CardName let cSuit = (i as MyHand).SuitName let a = (i as MyHand).Discard where a select cName + cSuit).ToList();
 
             foreach (var r in rmList)
             {
@@ -185,7 +162,7 @@ namespace SimpleWpfForm.Views
                                 moveOn = false;
                                 break;
                             }
-
+                            
 
                         }
                     }
