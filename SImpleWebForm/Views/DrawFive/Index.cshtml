@@ -1,0 +1,105 @@
+﻿@using SimpleWebForm.Models
+@model SimpleWebForm.Models.DrawFiveList
+
+@{
+    ViewBag.Title = "Index";
+     var ct = 0;
+}
+
+<h2>Index</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+
+@using (Html.BeginForm())
+{
+
+
+    <table class="table">
+        <tr>
+
+            <th>
+                Card Name
+            </th>
+            <th>
+                Suit Name
+            </th>
+            <th>
+                Image
+            </th>
+            <th class="text-center">
+                Discard
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model.DrawList)
+        {
+           
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SuitName)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.ImagePath)" alt="Image" width="30" height="30" />
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.DrawList[ct].Discard, new { htmlAttributes = new { @class = "form-control" } })
+                
+
+
+                </td>
+            </tr>
+
+            ct += 1;
+
+        }
+
+    </table>
+
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+
+            @Html.HiddenFor(m => Model.DiscardCount)
+            @{
+                for (var i = 0; i < Model.DrawList.Count; i++)
+                {
+                    @Html.HiddenFor(x => x.DrawList[i].CardName)
+                    @Html.HiddenFor(x => x.DrawList[i].SuitName)
+                    @Html.HiddenFor(x => x.DrawList[i].SuitColor)
+                    @Html.HiddenFor(x => x.DrawList[i].SuitColorName)
+                    @Html.HiddenFor(x => x.DrawList[i].Discard)
+                    @Html.HiddenFor(x => x.DrawList[i].OverAllHierarchyCardValue)
+                    @Html.HiddenFor(x => x.DrawList[i].HierarchyValue)
+                    @Html.HiddenFor(x => x.DrawList[i].ImagePath)
+
+
+                }
+
+
+            }
+
+            @{
+                if (ViewBag.Reset)
+                {
+                    @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive")
+                }
+                else
+                {
+                    <input type="submit" value="Draw new cards ot Stay" class="btn btn-default btn-success" />
+                }
+            }
+
+        </div>
+    </div>
+    <br/>
+
+}

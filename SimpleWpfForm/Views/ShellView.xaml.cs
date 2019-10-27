@@ -210,17 +210,6 @@ namespace SimpleWpfForm.Views
 
                 SortDataGrid(MyFiveCards, 4, ListSortDirection.Ascending);
             }
-
-
-
-
-            //(MyFiveCards.Items as List<MyHand>).Remove(c => c. );  //.RemoveAll(x => x.FirstName == "Bob");
-
-
-
-            }
-
-
-        
+        }
     }
 }
