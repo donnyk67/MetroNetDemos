@@ -200,7 +200,12 @@ namespace SimpleWebForm.ControllerHelpers
                 ict += 1;
             }
             if(IsSequential(intArray)) didYouWin = true;
+
             //
+            //Two Pair
+            var twoPair = pairCount.Select(c => c.Count).Where(ct => ct == 2).ToList();
+            if(twoPair.Count >1) didYouWin = true;
+
 
 
             return didYouWin;
