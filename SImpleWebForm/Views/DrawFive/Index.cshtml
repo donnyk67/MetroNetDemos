@@ -2,11 +2,11 @@
 @model SimpleWebForm.Models.DrawFiveList
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Draw Five, Jacks or better to win.";
      var ct = 0;
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
@@ -66,7 +66,7 @@
 
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-4">
+        <div class="col-lg-12 col-md-12 col-sm-12 text-center">
 
             @Html.HiddenFor(m => Model.DiscardCount)
             @{
@@ -90,7 +90,22 @@
             @{
                 if (ViewBag.Reset)
                 {
-                    @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive")
+                    @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive", new { @class="btn-lg" });
+                    <br />
+                    <div class="text-center bg-info">
+
+                        <br />
+                        @if (@ViewBag.DidYouWin)
+                        {
+                            <h3> YOU WIN </h3>
+                        }
+                        else
+                        {
+                            <h3> Sorry, you lost.  You need a pair of Jacks or better.  Please try again. </h3>
+                        }
+                        <br />
+
+                    </div>
                 }
                 else
                 {

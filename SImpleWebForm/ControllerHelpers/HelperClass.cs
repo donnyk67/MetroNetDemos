@@ -95,18 +95,19 @@ namespace SimpleWebForm.ControllerHelpers
             {
                 var rndCard = rnd.Next(1, 53);
                 var match = true;
-                while(match == true)
+                while (match == true)
                 {
                     match = false;
                     foreach (var o in omitList)
                     {
-                        if(rndCard == o )
+                        if (rndCard == o)
                         {
                             match = true;
                             rndCard = rnd.Next(1, 53);
                         }
                     }
                 }
+
                 //Got a distinct card
                 var card = newDeck.FirstOrDefault(x => x.OverAllHierarchyCardValue == rndCard);
                 var myCard = new DrawFiveClass
@@ -138,6 +139,7 @@ namespace SimpleWebForm.ControllerHelpers
                 dfl.Add(myCard);
 
             }
+
             //Add back the Held Cards
             foreach (var card in heldCards)
             {
@@ -148,6 +150,67 @@ namespace SimpleWebForm.ControllerHelpers
         }
 
 
+        public bool DidYouWin(List<DrawFiveClass> curHand)
+        {
+            var didYouWin = false;
+            var pairCount = curHand
+                .GroupBy(l => l.CardName)
+                .Select(g => new
+                {
+                    CardName = g.Key,
+                    Count = g.Select(l => l.CardName).Count()
+                });
+            foreach (var c in pairCount)
+            {
+                var ct = c.Count;
+                if (ct > 2) didYouWin = true;
+            }
+
+            //Pair Counts
+            var numAce = curHand.Count(n => n.CardName == "ACE");
+            var numKing = curHand.Count(n => n.CardName == "KING");
+            var numQueen = curHand.Count(n => n.CardName == "QUEEN");
+            var numJacks = curHand.Count(n => n.CardName == "JACK");
+            var numTen = curHand.Count(n => n.CardName == "TEN");
+            var numNine = curHand.Count(n => n.CardName == "NINE");
+            var numEight = curHand.Count(n => n.CardName == "EIGHT");
+            var numSeven = curHand.Count(n => n.CardName == "SEVEN");
+            var numSix = curHand.Count(n => n.CardName == "SIX");
+            var numFive = curHand.Count(n => n.CardName == "FIVE");
+            var numFour = curHand.Count(n => n.CardName == "FOUR");
+            var numThree = curHand.Count(n => n.CardName == "THREE");
+            var numTwo = curHand.Count(n => n.CardName == "TWO");
+
+            //Jacks or Better
+            if(numAce > 1 || numKing > 1 || numQueen > 1 || numJacks > 1) didYouWin = true;
+
+            //Suit Counts
+            var numSpade = curHand.Count(n => n.SuitName == "SPADE");
+            var numClub = curHand.Count(n => n.SuitName == "CLUB");
+            var numDiamond = curHand.Count(n => n.SuitName == "DIAMOND");
+            var numHeart = curHand.Count(n => n.SuitName == "HEART");
+            if (numSpade > 4 || numClub > 4 || numDiamond > 4 || numHeart > 4) didYouWin = true;
+
+            //is a straight
+            var intArray = new int[5];
+            var ict = 0;
+            foreach (var c in curHand)
+            {
+                intArray[ict] = c.HierarchyValue;
+                ict += 1;
+            }
+            if(IsSequential(intArray)) didYouWin = true;
+            //
+
+
+            return didYouWin;
+        }
+
+
+        private static bool IsSequential(int[] array)
+        {
+            return array.Zip(array.Skip(1), (a, b) => (a + 1) == b).All(x => x);
+        }
 
     }
 }

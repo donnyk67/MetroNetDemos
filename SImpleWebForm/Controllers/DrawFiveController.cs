@@ -56,6 +56,9 @@ namespace SimpleWebForm.Controllers
             returnList.DrawList = sortedList;
             ViewBag.Reset = true;
             ModelState.Clear();
+            
+            var didYouWin = Helper.DidYouWin(returnList.DrawList);
+            ViewBag.DidYouWin = didYouWin;
             return View(returnList);
         }
     }
