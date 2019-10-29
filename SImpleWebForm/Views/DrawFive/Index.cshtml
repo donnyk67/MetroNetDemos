@@ -2,17 +2,51 @@
 @model SimpleWebForm.Models.DrawFiveList
 
 @{
-    ViewBag.Title = "Draw Five, Jacks or better to win.";
+    ViewBag.Title = "Five Card Draw, Jacks or better to win.";
      var ct = 0;
 }
-
+<br/>
 <h2>@ViewBag.Title</h2>
+<br/>
+<div class="row">
 
-<p>
-    @*@Html.ActionLink("Create New", "Create")*@
-</p>
 
-@using (Html.BeginForm())
+    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+        @{
+
+            if (!ViewBag.Reset)
+            {
+
+
+                using (Html.BeginForm("DiscardAll", "DrawFive", FormMethod.Post, Model))
+                {
+                    for (var i = 0; i < Model.DrawList.Count; i++)
+                    {
+                        @Html.HiddenFor(x => x.DrawList[i].CardName)
+                        @Html.HiddenFor(x => x.DrawList[i].SuitName)
+                        @Html.HiddenFor(x => x.DrawList[i].SuitColor)
+                        @Html.HiddenFor(x => x.DrawList[i].SuitColorName)
+                        @Html.HiddenFor(x => x.DrawList[i].Discard)
+                        @Html.HiddenFor(x => x.DrawList[i].OverAllHierarchyCardValue)
+                        @Html.HiddenFor(x => x.DrawList[i].HierarchyValue)
+                        @Html.HiddenFor(x => x.DrawList[i].ImagePath)
+                    }
+
+                    @*<input type="submit" class="btn btn-default " value="Select All Cards for Discard">*@
+                    <button type="submit">
+                        <span class="glyphicon glyphicon-ok"> Select All Cards for Discard</span>
+                    </button>
+
+                }
+            }
+        }
+        <br/>
+    </div>
+
+
+</div>
+
+@using (Html.BeginForm("Index","DrawFive", FormMethod.Post, Model))
 {
 
 
@@ -49,9 +83,13 @@
                     <img src="@Url.Content(item.ImagePath)" alt="Image" width="30" height="30" />
                 </td>
                 <td>
-                    @Html.EditorFor(m => m.DrawList[ct].Discard, new { htmlAttributes = new { @class = "form-control" } })
-                
+                    @*@Html.EditorFor(m => m.DrawList[ct].Discard, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @{
+                        var myId = Model.DrawList[ct].OverAllHierarchyCardValue; 
+                        string curValue = Model.DrawList[ct].Discard.ToString();
 
+                    }
+                    @Html.EditorFor(m => m.DrawList[ct].Discard,new {htmlAttributes = new {id="dis", @class = "form-control" }})
 
                 </td>
             </tr>
@@ -97,11 +135,11 @@
                         <br />
                         @if (@ViewBag.DidYouWin)
                         {
-                            <h3> YOU WIN </h3>
+                            <h1 class="glyphicon glyphicon-thumbs-up"> YOU WIN </h1>
                         }
                         else
                         {
-                            <h3> Sorry, you lost.  You need a pair of Jacks or better.  Please try again. </h3>
+                            <h3> Sorry, you lost.  You need a pair of Jacks or better to win.  Please try again. </h3>
                         }
                         <br />
 
@@ -109,7 +147,7 @@
                 }
                 else
                 {
-                    <input type="submit" value="Draw new cards ot Stay" class="btn btn-default btn-success" />
+                    <input type="submit" value="Draw new cards or Stay" class="btn btn-default btn-success" />
                 }
             }
 
@@ -117,4 +155,13 @@
     </div>
     <br/>
 
+
+
+    
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+
+
+       
+    </script>
 }

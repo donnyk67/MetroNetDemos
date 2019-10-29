@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CommonLibrary.PlayingCardFactory;
 using CommonLibrary.PlayingCards;
 using SimpleWebForm.Models;
@@ -184,7 +183,7 @@ namespace SimpleWebForm.ControllerHelpers
             //Jacks or Better
             if(numAce > 1 || numKing > 1 || numQueen > 1 || numJacks > 1) didYouWin = true;
 
-            //Suit Counts
+            //Suit Counts (Flush)
             var numSpade = curHand.Count(n => n.SuitName == "SPADE");
             var numClub = curHand.Count(n => n.SuitName == "CLUB");
             var numDiamond = curHand.Count(n => n.SuitName == "DIAMOND");
@@ -201,10 +200,18 @@ namespace SimpleWebForm.ControllerHelpers
             }
             if(IsSequential(intArray)) didYouWin = true;
 
-            //
+     
             //Two Pair
             var twoPair = pairCount.Select(c => c.Count).Where(ct => ct == 2).ToList();
             if(twoPair.Count >1) didYouWin = true;
+
+            //Low Ace Straight
+            if(curHand.Exists(x => x.CardName == "ACE") &&
+               curHand.Exists(x => x.CardName == "TWO") &&
+               curHand.Exists(x => x.CardName == "THREE") &&
+               curHand.Exists(x => x.CardName == "FOUR") &&
+               curHand.Exists(x => x.CardName == "FIVE")) didYouWin = true;
+
 
 
 

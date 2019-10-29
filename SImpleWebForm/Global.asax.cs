@@ -33,7 +33,6 @@ namespace SImpleWebForm
             // Register 
             builder.RegisterType<PlayingCardFactory>().As<IPlayingCardFactory>().InstancePerHttpRequest();
             builder.RegisterType<HelperClass>().As<IHelperClass>().InstancePerHttpRequest();
-
             builder.RegisterModelBinderProvider();
 
             // Set the MVC dependency resolver to use Autofac

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using SimpleWebForm.StaticHelpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,7 +23,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Five Card Draw Game", "Index", "DrawFive")</li>
+                    <li>@Html.ImageActionLink("Five Card Draw", "Index", "DrawFive", null, null, "~/img/RoyalFlush.png")</li>
                 </ul>
             </div>
         </div>

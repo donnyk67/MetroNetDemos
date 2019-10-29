@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -138,6 +139,7 @@
     <Compile Include="Models\FunFact.cs" />
     <Compile Include="Models\FunFactViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaticHelpers\CustomHtmlHelepers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -151,6 +153,7 @@
     <Content Include="img\Club.png" />
     <Content Include="img\Diamond.png" />
     <Content Include="img\Heart.png" />
+    <Content Include="img\RoyalFlush.png" />
     <Content Include="img\Spade.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

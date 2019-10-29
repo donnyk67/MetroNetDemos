@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using CommonLibrary.PlayingCardFactory;
-using CommonLibrary.PlayingCards;
 using SimpleWebForm.ControllerHelpers;
 using SimpleWebForm.Models;
-using Image = System.Drawing.Image;
 
 namespace SimpleWebForm.Controllers
 {
     public class DrawFiveController : Controller
     {
-        private IPlayingCardFactory Pcf { get; set; }
+        // ReSharper disable once NotAccessedField.Local
+        private readonly IPlayingCardFactory _pcf;
         private IHelperClass Helper { get; set; }
 
         public DrawFiveController(IPlayingCardFactory pcf, IHelperClass helper)
         {
-          Pcf = pcf;
-          Helper = helper;
-
+            _pcf = pcf;
+            Helper = helper;
         }
         // GET: DrawFive
         public ActionResult Index()
@@ -39,9 +34,6 @@ namespace SimpleWebForm.Controllers
         [HttpPost]
         public ActionResult Index(DrawFiveList draw)
         {
-
-            var heldCards = draw.DrawList.Where(x => x.Discard == false);
-            var disCarded = draw.DrawList.Where(x => x.Discard == true);
             var curHand = draw.DrawList;
 
             var returnList = new DrawFiveList();
@@ -61,5 +53,21 @@ namespace SimpleWebForm.Controllers
             ViewBag.DidYouWin = didYouWin;
             return View(returnList);
         }
+
+
+        [HttpPost]
+        public ActionResult DiscardAll(DrawFiveList draw)
+        {
+            foreach (var c in draw.DrawList)
+            {
+                c.Discard = true;
+            }
+            ModelState.Clear();
+            ViewBag.Reset = false;
+            return View("Index", draw);
+        }
+
+
+
     }
 }
