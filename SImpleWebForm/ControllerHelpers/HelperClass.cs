@@ -186,9 +186,9 @@ namespace SimpleWebForm.ControllerHelpers
             if (numAce > 1 || numKing > 1 || numQueen > 1 || numJacks > 1)
             {
                 wc.DidYouWin = true;
-                wc.CreditsWon = 1;
+                wc.CreditsWon = 0;
                 wc.WinningHand = "Pair of Jacks or better.";
-                wc.Message = "You win 1 credit";
+                wc.Message = "You win a free turn";
             }
 
             //Two Pair
@@ -196,9 +196,9 @@ namespace SimpleWebForm.ControllerHelpers
             if (twoPair.Count > 1)
             {
                 wc.DidYouWin = true;
-                wc.CreditsWon = 3;
+                wc.CreditsWon = 2;
                 wc.WinningHand = "2 Pair.";
-                wc.Message = "You win 3 credits";
+                wc.Message = "You win 2 credits";
             }
 
 
