@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using CommonLibrary.PlayingCardFactory;
 using SimpleWebForm.ControllerHelpers;
 using SimpleWebForm.Models;
+using SimpleWebForm.StaticHelpers;
 
 namespace SimpleWebForm.Controllers
 {
@@ -21,12 +22,22 @@ namespace SimpleWebForm.Controllers
         // GET: DrawFive
         public ActionResult Index()
         {
-            var dfl = new DrawFiveList
+            if (GameCredits.CurrentCredits == 0)
             {
-                DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
-            };
-            ViewBag.Reset = false;
-            return View(dfl);
+                //Redirect to Credits view to by more credits
+                return Redirect("http://www.Google.com");
+            }
+            else
+            {
+                if (GameCredits.CurrentCredits < 0) GameCredits.CurrentCredits = 0;
+                var dfl = new DrawFiveList
+                {
+                    DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
+                };
+                ViewBag.Reset = false;
+                return View(dfl);
+            }
+
         }
 
 
@@ -50,10 +61,14 @@ namespace SimpleWebForm.Controllers
             ModelState.Clear();
             
             var didYouWin = Helper.DidYouWin(returnList.DrawList);
-            ViewBag.DidYouWin = didYouWin;
+
+            ViewBag.DidYouWin = didYouWin.DidYouWin;
+            ViewBag.Message = didYouWin.Message;
+            ViewBag.WinningHand = didYouWin.WinningHand;
+            ViewBag.CreditsWon = didYouWin.CreditsWon;
             return View(returnList);
         }
-
+        
 
         [HttpPost]
         public ActionResult DiscardAll(DrawFiveList draw)
@@ -68,6 +83,21 @@ namespace SimpleWebForm.Controllers
         }
 
 
+
+
+        public ActionResult BuyMoreCredits()
+        {
+            //For now just simply add more credits
+            GameCredits.CurrentCredits = 5;
+           
+                var dfl = new DrawFiveList
+                {
+                    DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
+                };
+                ViewBag.Reset = false;
+                return View("Index", dfl);
+
+        }
 
     }
 }

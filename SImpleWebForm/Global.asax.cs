@@ -11,6 +11,7 @@ using Autofac.Integration.Mvc;
 using CommonLibrary.PlayingCardFactory;
 using SimpleWebForm.ControllerHelpers;
 using SimpleWebForm.Controllers;
+using SimpleWebForm.StaticHelpers;
 
 namespace SImpleWebForm
 {
@@ -18,6 +19,8 @@ namespace SImpleWebForm
     {
         protected void Application_Start()
         {
+            GameCredits.CurrentCredits = 5;
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

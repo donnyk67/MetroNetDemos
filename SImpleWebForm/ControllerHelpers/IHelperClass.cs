@@ -7,8 +7,7 @@ namespace SimpleWebForm.ControllerHelpers
     {
         List<DrawFiveClass> GetFiveNewCards();
         List<DrawFiveClass> ReplaceDisCards(List<DrawFiveClass> curHand);
-        bool DidYouWin(List<DrawFiveClass> curHand);
-
+        GameResultsClass DidYouWin(List<DrawFiveClass> curHand);
 
     }
 }

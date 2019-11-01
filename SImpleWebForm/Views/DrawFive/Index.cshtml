@@ -1,4 +1,6 @@
-﻿@using SimpleWebForm.Models
+﻿@using Microsoft.Ajax.Utilities
+@using SimpleWebForm.Models
+@using SimpleWebForm.StaticHelpers
 @model SimpleWebForm.Models.DrawFiveList
 
 @{
@@ -8,6 +10,51 @@
 <br/>
 <h2>@ViewBag.Title</h2>
 <br/>
+<div id="GameCreditsDiv" class="pull-right ">
+
+    @{
+        if (ViewBag.DidYouWin != null)
+        {
+            if (@ViewBag.DidYouWin)
+            {
+
+                GameCredits.CurrentCredits = GameCredits.CurrentCredits + (int)ViewBag.CreditsWon;
+                @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+            }
+            else
+            {
+                if (GameCredits.CurrentCredits == 1)
+                {
+                    @Html.ActionLink("Buy More Credits", "BuyMoreCredits")
+                    <br />
+                    GameCredits.CurrentCredits = GameCredits.CurrentCredits - 1;
+                    @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+                }
+                else
+                {
+                    if (GameCredits.CurrentCredits <= 0)
+                    {
+                        @Html.ActionLink("Buy More Credits", "http://www.Google.com")
+                        <br />
+                        GameCredits.CurrentCredits = GameCredits.CurrentCredits = 0;
+                        @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+                    }
+                    else
+                    {
+                        GameCredits.CurrentCredits = GameCredits.CurrentCredits - 1;
+                        @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+                    }
+                }
+            }
+        }
+        else
+        {
+
+            @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+        }
+    }
+
+</div>
 <div class="row">
 
 
@@ -128,14 +175,17 @@
             @{
                 if (ViewBag.Reset)
                 {
-                    @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive", new { @class="btn-lg" });
+                    if (GameCredits.CurrentCredits > 0)
+                    {
+                        @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive", new {@class = "btn-lg"})
+                    }
                     <br />
                     <div class="text-center bg-info">
 
                         <br />
                         @if (@ViewBag.DidYouWin)
                         {
-                            <h1 class="glyphicon glyphicon-thumbs-up"> YOU WIN </h1>
+                            <h1 class="glyphicon glyphicon-thumbs-up"> @ViewBag.WinningHand  @ViewBag.Message </h1>
                         }
                         else
                         {
@@ -154,7 +204,10 @@
         </div>
     </div>
     <br/>
-
+    <div class="row text-center">
+        <br/>
+        <img src="~/img/WinningHands.png" />
+    </div>
 
 
     

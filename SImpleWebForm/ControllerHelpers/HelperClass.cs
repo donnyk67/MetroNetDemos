@@ -149,9 +149,14 @@ namespace SimpleWebForm.ControllerHelpers
         }
 
 
-        public bool DidYouWin(List<DrawFiveClass> curHand)
+        public GameResultsClass DidYouWin(List<DrawFiveClass> curHand)
         {
-            var didYouWin = false;
+            var wc = new GameResultsClass();
+            wc.DidYouWin = false;
+            var straightFlushPart1 = false;
+            var straightFlushPart2 = false;
+
+
             var pairCount = curHand
                 .GroupBy(l => l.CardName)
                 .Select(g => new
@@ -159,11 +164,8 @@ namespace SimpleWebForm.ControllerHelpers
                     CardName = g.Key,
                     Count = g.Select(l => l.CardName).Count()
                 });
-            foreach (var c in pairCount)
-            {
-                var ct = c.Count;
-                if (ct > 2) didYouWin = true;
-            }
+
+
 
             //Pair Counts
             var numAce = curHand.Count(n => n.CardName == "ACE");
@@ -181,14 +183,37 @@ namespace SimpleWebForm.ControllerHelpers
             var numTwo = curHand.Count(n => n.CardName == "TWO");
 
             //Jacks or Better
-            if(numAce > 1 || numKing > 1 || numQueen > 1 || numJacks > 1) didYouWin = true;
+            if (numAce > 1 || numKing > 1 || numQueen > 1 || numJacks > 1)
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 1;
+                wc.WinningHand = "Pair of Jacks or better.";
+                wc.Message = "You win 1 credit";
+            }
 
-            //Suit Counts (Flush)
-            var numSpade = curHand.Count(n => n.SuitName == "SPADE");
-            var numClub = curHand.Count(n => n.SuitName == "CLUB");
-            var numDiamond = curHand.Count(n => n.SuitName == "DIAMOND");
-            var numHeart = curHand.Count(n => n.SuitName == "HEART");
-            if (numSpade > 4 || numClub > 4 || numDiamond > 4 || numHeart > 4) didYouWin = true;
+            //Two Pair
+            var twoPair = pairCount.Select(c => c.Count).Where(ct => ct == 2).ToList();
+            if (twoPair.Count > 1)
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 3;
+                wc.WinningHand = "2 Pair.";
+                wc.Message = "You win 3 credits";
+            }
+
+
+            //Three of a Kind
+            foreach (var c in pairCount)
+            {
+                var ct = c.Count;
+                if (ct > 2)
+                {
+                    wc.DidYouWin = true;
+                    wc.CreditsWon = 5;
+                    wc.WinningHand = "3 of a kind.";
+                    wc.Message = "You win 5 credits";
+                }
+            }
 
             //is a straight
             var intArray = new int[5];
@@ -198,24 +223,101 @@ namespace SimpleWebForm.ControllerHelpers
                 intArray[ict] = c.HierarchyValue;
                 ict += 1;
             }
-            if(IsSequential(intArray)) didYouWin = true;
 
-     
-            //Two Pair
-            var twoPair = pairCount.Select(c => c.Count).Where(ct => ct == 2).ToList();
-            if(twoPair.Count >1) didYouWin = true;
-
+            if (IsSequential(intArray))
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 10;
+                wc.WinningHand = "Straight.";
+                wc.Message = "You win 10 credits";
+                straightFlushPart1 = true;
+            }
             //Low Ace Straight
-            if(curHand.Exists(x => x.CardName == "ACE") &&
-               curHand.Exists(x => x.CardName == "TWO") &&
-               curHand.Exists(x => x.CardName == "THREE") &&
-               curHand.Exists(x => x.CardName == "FOUR") &&
-               curHand.Exists(x => x.CardName == "FIVE")) didYouWin = true;
+            if (curHand.Exists(x => x.CardName == "ACE") &&
+                curHand.Exists(x => x.CardName == "TWO") &&
+                curHand.Exists(x => x.CardName == "THREE") &&
+                curHand.Exists(x => x.CardName == "FOUR") &&
+                curHand.Exists(x => x.CardName == "FIVE"))
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 10;
+                wc.WinningHand = "Straight.";
+                wc.Message = "You win 10 credits";
+                straightFlushPart1 = false;
+            }
+
+            //Suit Counts (Flush)
+            var numSpade = curHand.Count(n => n.SuitName == "SPADE");
+            var numClub = curHand.Count(n => n.SuitName == "CLUB");
+            var numDiamond = curHand.Count(n => n.SuitName == "DIAMOND");
+            var numHeart = curHand.Count(n => n.SuitName == "HEART");
+            if (numSpade > 4 || numClub > 4 || numDiamond > 4 || numHeart > 4)
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 15;
+                wc.WinningHand = "Flush.";
+                wc.Message = "You win 15 credits";
+                straightFlushPart2 = true;
+            }
 
 
 
+            //Full House
+            //Three of a Kind
+            var fhTwoPair = false;
+            var fhThreePair = false;
+            foreach (var c in pairCount)
+            {
+                var ct = c.Count;
+                if (ct == 2) fhTwoPair = true;
+                if (ct == 3) fhThreePair = true;
+            }
 
-            return didYouWin;
+            if (fhThreePair && fhTwoPair)
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 20;
+                wc.WinningHand = "Full House.";
+                wc.Message = "You win 20 credits";
+            }
+
+            //Four of a Kind
+            foreach (var c in pairCount)
+            {
+                var ct = c.Count;
+                if (ct == 4)
+                {
+                    wc.DidYouWin = true;
+                    wc.CreditsWon = 30;
+                    wc.WinningHand = "4 of a kind.";
+                    wc.Message = "You win 30 credits";
+                }
+            }
+
+            //Straight Flush
+            if (straightFlushPart1 && straightFlushPart2)
+            {
+                wc.DidYouWin = true;
+                wc.CreditsWon = 50;
+                wc.WinningHand = "Straight Flush.";
+                wc.Message = "You win 50 credits";
+            }
+
+            //Royal Straight Flush
+            if (curHand.Exists(x => x.CardName == "ACE") &&
+                curHand.Exists(x => x.CardName == "KING") &&
+                curHand.Exists(x => x.CardName == "QUEEN") &&
+                curHand.Exists(x => x.CardName == "JACK") &&
+                curHand.Exists(x => x.CardName == "TEN") &&
+                straightFlushPart1 && straightFlushPart2)
+            {
+                    wc.DidYouWin = true;
+                    wc.CreditsWon = 100;
+                    wc.WinningHand = "Royal Straight Flush.";
+                    wc.Message = "You win 100 credits";
+            }
+
+            return wc;
         }
 
 
