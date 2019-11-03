@@ -20,40 +20,29 @@
         {
             if (@ViewBag.DidYouWin)
             {
-
-                GameCredits.CurrentCredits = GameCredits.CurrentCredits + (int)ViewBag.CreditsWon;
-                @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+                GameCredits.UpdateUserCredits((int)ViewBag.CreditsWon);
+                @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
             }
             else
             {
-                if (GameCredits.CurrentCredits == 1)
+                if (GameCredits.GetUserCredits() == 1)
                 {
                     @Html.ActionLink("Buy More Credits", "BuyMoreCredits")
                     <br />
-                    GameCredits.CurrentCredits = GameCredits.CurrentCredits - 1;
-                    @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+                    GameCredits.UpdateUserCredits(-1);
+                    @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
                 }
                 else
                 {
-                    if (GameCredits.CurrentCredits <= 0)
-                    {
-                        @Html.ActionLink("Buy More Credits", "http://www.Google.com")
-                        <br />
-                        GameCredits.CurrentCredits = GameCredits.CurrentCredits = 0;
-                        @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
-                    }
-                    else
-                    {
-                        GameCredits.CurrentCredits = GameCredits.CurrentCredits - 1;
-                        @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
-                    }
+                        GameCredits.UpdateUserCredits(-1);
+                        @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
                 }
             }
         }
         else
         {
 
-            @Html.Raw(@GameCredits.CurrentCredits.ToString() + " Credits")
+            @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
         }
     }
 
@@ -190,7 +179,7 @@
             @{
                 if (ViewBag.Reset)
                 {
-                    if (GameCredits.CurrentCredits > 0)
+                    if (GameCredits.GetUserCredits() > 0)
                     {
                         @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive", new {@class = "btn-lg"})
                     }
@@ -228,8 +217,13 @@
     
     @Scripts.Render("~/bundles/jquery")
     <script>
-
-
-       
+        $().ready(function() {
+            if(document.referrer != 'http://localhost:8181/'){ 
+                history.pushState(null, null, 'DoNotBeACheater_BackButtonIsDisabled');
+                window.addEventListener('popstate', function () {
+                    history.pushState(null, null, 'DoNotBeACheater_BackButtonIsDisabled');
+                });
+            }
+        });
     </script>
 }

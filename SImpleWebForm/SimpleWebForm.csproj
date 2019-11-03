@@ -53,11 +53,18 @@
     <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -141,11 +148,33 @@
     <Compile Include="Models\FunFact.cs" />
     <Compile Include="Models\FunFactViewModel.cs" />
     <Compile Include="Models\GameResultsClass.cs" />
+    <Compile Include="Models\UserCredit.cs">
+      <DependentUpon>UserCreditModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserCreditModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserCreditModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserCreditModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserCreditModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserCreditModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserCreditModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticHelpers\CustomHtmlHelepers.cs" />
     <Compile Include="StaticHelpers\GameCredits.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DrawFive.mdf" />
+    <Content Include="App_Data\DrawFive_log.ldf">
+      <DependentUpon>DrawFive.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -160,6 +189,16 @@
     <Content Include="img\RoyalFlush.png" />
     <Content Include="img\Spade.png" />
     <Content Include="img\WinningHands.png" />
+    <Content Include="Models\UserCreditModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserCreditModel.edmx</DependentUpon>
+      <LastGenOutput>UserCreditModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\UserCreditModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserCreditModel.edmx</DependentUpon>
+      <LastGenOutput>UserCreditModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -178,6 +217,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="Models\UserCreditModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>UserCreditModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\UserCreditModel.edmx.diagram">
+      <DependentUpon>UserCreditModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\IndexClearValuesOnLoadHelper.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -224,9 +270,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
@@ -243,6 +287,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

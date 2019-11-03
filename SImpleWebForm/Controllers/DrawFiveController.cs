@@ -22,14 +22,15 @@ namespace SimpleWebForm.Controllers
         // GET: DrawFive
         public ActionResult Index()
         {
-            if (GameCredits.CurrentCredits == 0)
+            if (GameCredits.GetUserCredits() == 0)
             {
                 //Redirect to Credits view to by more credits
                 return Redirect("http://www.Google.com");
             }
             else
             {
-                if (GameCredits.CurrentCredits < 0) GameCredits.CurrentCredits = 0;
+                //if (GameCredits.CurrentCredits < 0) GameCredits.CurrentCredits = 0;
+
                 var dfl = new DrawFiveList
                 {
                     DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
@@ -87,8 +88,8 @@ namespace SimpleWebForm.Controllers
 
         public ActionResult BuyMoreCredits()
         {
-            //For now just simply add more credits
-            GameCredits.CurrentCredits = 5;
+            //For now just simply add 5 more credits
+            GameCredits.ResetUserCredits();
            
                 var dfl = new DrawFiveList
                 {
