@@ -19,6 +19,8 @@ namespace SImpleWebForm
     {
         protected void Application_Start()
         {
+            //***Note*** this is purely for example and NOT a REAL WORLD solution.
+            //Static Classes for storage do not work well in the Web World.
             GameCredits.CurrentCredits = 5;
 
             AreaRegistration.RegisterAllAreas();
