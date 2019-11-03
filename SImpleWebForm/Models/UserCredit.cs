@@ -11,10 +11,20 @@ namespace SimpleWebForm.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+
+
+
     public partial class UserCredit
     {
+        [Required(ErrorMessage = "A Unique UserId / UserName is required")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Invalid User, must be at lease 5 characters")]
+        [Display(Name = "User Name / User Id")]
         public string UserId { get; set; }
+        [Required(ErrorMessage = "A default Credit Amount is required")]
+        [RegularExpression("^[0-9]", ErrorMessage = "Numeric Value Please, 1 through 10")]
+        [Range(0, 10)]
         public int Credits { get; set; }
     }
 }

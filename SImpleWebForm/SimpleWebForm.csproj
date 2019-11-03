@@ -140,6 +140,7 @@
     <Compile Include="ControllerHelpers\IHelperClass.cs" />
     <Compile Include="Controllers\DrawFiveController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserCreditsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -269,6 +270,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\UserCredits\Create.cshtml" />
+    <Content Include="Views\UserCredits\Delete.cshtml" />
+    <Content Include="Views\UserCredits\Details.cshtml" />
+    <Content Include="Views\UserCredits\Edit.cshtml" />
+    <Content Include="Views\UserCredits\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
