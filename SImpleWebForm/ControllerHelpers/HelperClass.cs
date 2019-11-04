@@ -82,7 +82,7 @@ namespace SimpleWebForm.ControllerHelpers
 
         public List<DrawFiveClass> ReplaceDisCards(List<DrawFiveClass> curHand)
         {
-            var drawCount = curHand.Where(x => x.Discard).Count();
+            var drawCount = curHand.Count(x => x.Discard);
             var heldCards = curHand.Where(x => x.Discard == false);
             var disCarded = curHand.Where(x => x.Discard == true);
             var omitList = curHand.Select(x => x.OverAllHierarchyCardValue);
@@ -188,7 +188,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 0;
                 wc.WinningHand = "Pair of Jacks or better.";
-                wc.Message = "You win a free turn";
+                wc.Message = "You win a free turn.";
             }
 
             //Two Pair
@@ -198,7 +198,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 2;
                 wc.WinningHand = "2 Pair.";
-                wc.Message = "You win 2 credits";
+                wc.Message = "You win 2 credits.";
             }
 
 
@@ -211,7 +211,7 @@ namespace SimpleWebForm.ControllerHelpers
                     wc.DidYouWin = true;
                     wc.CreditsWon = 5;
                     wc.WinningHand = "3 of a kind.";
-                    wc.Message = "You win 5 credits";
+                    wc.Message = "You win 5 credits.";
                 }
             }
 
@@ -229,7 +229,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 10;
                 wc.WinningHand = "Straight.";
-                wc.Message = "You win 10 credits";
+                wc.Message = "You win 10 credits.";
                 straightFlushPart1 = true;
             }
             //Low Ace Straight
@@ -242,7 +242,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 10;
                 wc.WinningHand = "Straight.";
-                wc.Message = "You win 10 credits";
+                wc.Message = "You win 10 credits.";
                 straightFlushPart1 = false;
             }
 
@@ -256,7 +256,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 15;
                 wc.WinningHand = "Flush.";
-                wc.Message = "You win 15 credits";
+                wc.Message = "You win 15 credits.";
                 straightFlushPart2 = true;
             }
 
@@ -278,7 +278,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 20;
                 wc.WinningHand = "Full House.";
-                wc.Message = "You win 20 credits";
+                wc.Message = "You win 20 credits.";
             }
 
             //Four of a Kind
@@ -290,7 +290,7 @@ namespace SimpleWebForm.ControllerHelpers
                     wc.DidYouWin = true;
                     wc.CreditsWon = 30;
                     wc.WinningHand = "4 of a kind.";
-                    wc.Message = "You win 30 credits";
+                    wc.Message = "You win 30 credits.";
                 }
             }
 
@@ -300,7 +300,7 @@ namespace SimpleWebForm.ControllerHelpers
                 wc.DidYouWin = true;
                 wc.CreditsWon = 50;
                 wc.WinningHand = "Straight Flush.";
-                wc.Message = "You win 50 credits";
+                wc.Message = "You win 50 credits.";
             }
 
             //Royal Straight Flush
@@ -314,7 +314,7 @@ namespace SimpleWebForm.ControllerHelpers
                     wc.DidYouWin = true;
                     wc.CreditsWon = 100;
                     wc.WinningHand = "Royal Straight Flush.";
-                    wc.Message = "You win 100 credits";
+                    wc.Message = "You win 100 credits.";
             }
 
             return wc;

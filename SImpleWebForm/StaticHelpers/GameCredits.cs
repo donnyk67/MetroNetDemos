@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using SimpleWebForm.Models;
@@ -14,10 +15,10 @@ namespace SimpleWebForm.StaticHelpers
         // For now everything is under Player One.
 
         private static readonly DrawFiveEntities db = new DrawFiveEntities();
-        public static int GetUserCredits()
+        public static int GetUserCredits(string userId)
         {
 
-            var userCred = db.UserCredits.Find("Player1");
+            var userCred = db.UserCredits.Find(userId);
             if (userCred != null)
             {
                 int returnValue = userCred.Credits; 
@@ -28,15 +29,24 @@ namespace SimpleWebForm.StaticHelpers
             return 0;
         }
 
-        public static void UpdateUserCredits(int credit)
+        public static void UpdateUserCredits(int credit, string userId)
         {
-            var userCred = db.UserCredits.Find("Player1");
-            if (userCred != null) userCred.Credits += credit;
+            //if (credit < 0) credit = 0;
+            var userCred = db.UserCredits.Find(userId);
+
+            if (userCred != null)
+            {
+                if (userCred.Credits == 0) credit = 0; // do not go negative
+                userCred.Credits += credit;
+
+            }
+            db.Entry(userCred).State = EntityState.Modified;
             db.SaveChanges();
+
         }
-        public static void ResetUserCredits()
+        public static void ResetUserCredits(string userId)
         {
-            var userCred = db.UserCredits.Find("Player1");
+            var userCred = db.UserCredits.Find(userId);
             if (userCred != null) userCred.Credits = 5;
             db.SaveChanges();
         }

@@ -20,7 +20,7 @@ namespace SImpleWebForm
         protected void Application_Start()
         {
             //***Note*** for now just use player one
-            GameCredits.ResetUserCredits();
+            //GameCredits.ResetUserCredits();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

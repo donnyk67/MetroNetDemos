@@ -70,7 +70,7 @@ namespace SimpleWebForm.Controllers
             return View(userCredit);
         }
 
-        // GET: UserCredits/Edit/5
+        // GET: UserCredits/Edit/Player1 (example)
         public ActionResult Edit(string id)
         {
             if (id == null)

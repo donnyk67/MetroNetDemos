@@ -2,6 +2,7 @@
 @using SimpleWebForm.Models
 @using SimpleWebForm.StaticHelpers
 @model SimpleWebForm.Models.DrawFiveList
+@Scripts.Render("~/bundles/jquery")
 
 @{
     ViewBag.Title = "Five Card Draw, Jacks or better to win.";
@@ -11,40 +12,31 @@
     //Static Classes for storage do not work well in the Web World.
 }
 <br/>
-<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Title</h3>
+<h5>Welcome @Model.UserId</h5>
 <br/>
 <div id="GameCreditsDiv" class="pull-right ">
-
     @{
-        if (ViewBag.DidYouWin != null)
+        if (@Model.Credits <= 1)
         {
-            if (@ViewBag.DidYouWin)
-            {
-                GameCredits.UpdateUserCredits((int)ViewBag.CreditsWon);
-                @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
-            }
-            else
-            {
-                if (GameCredits.GetUserCredits() == 1)
-                {
-                    @Html.ActionLink("Buy More Credits", "BuyMoreCredits")
-                    <br />
-                    GameCredits.UpdateUserCredits(-1);
-                    @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
-                }
-                else
-                {
-                        GameCredits.UpdateUserCredits(-1);
-                        @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
-                }
-            }
+            @Html.ActionLink("Buy More Credits",
+                "Edit",
+                "UserCredits",
+                new { id = Model.UserId },
+                null);
+             <br />
         }
-        else
+        if (!ViewBag.Reset)
         {
+            <div>
+                @Html.DisplayNameFor(model => model.Credits) -
+                @Html.DisplayFor(model => model.Credits)
+            </div>
+        }
 
-            @Html.Raw(@GameCredits.GetUserCredits().ToString() + " Credits")
-        }
     }
+
+
 
 </div>
 <div class="row">
@@ -59,6 +51,9 @@
 
                 using (Html.BeginForm("DiscardAll", "DrawFive", FormMethod.Post, Model))
                 {
+                    @Html.HiddenFor(m => Model.UserId)
+                    @Html.HiddenFor(m => Model.Credits)
+
                     for (var i = 0; i < Model.DrawList.Count; i++)
                     {
                         @Html.HiddenFor(x => x.DrawList[i].CardName)
@@ -122,7 +117,6 @@
                     <img src="@Url.Content(item.ImagePath)" alt="Image" width="30" height="30" />
                 </td>
                 <td class="text-center">
-                    @*@Html.EditorFor(m => m.DrawList[ct].Discard, new { htmlAttributes = new { @class = "form-control" } })*@
                     @{
                         var myId = Model.DrawList[ct].OverAllHierarchyCardValue;
                         string curValue = Model.DrawList[ct].Discard.ToString();
@@ -158,6 +152,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 text-center">
 
             @Html.HiddenFor(m => Model.DiscardCount)
+            @Html.HiddenFor(m => Model.UserId)
+            @Html.HiddenFor(m => Model.Credits)
             @{
                 for (var i = 0; i < Model.DrawList.Count; i++)
                 {
@@ -179,9 +175,13 @@
             @{
                 if (ViewBag.Reset)
                 {
-                    if (GameCredits.GetUserCredits() > 0)
+                    if (@Model.Credits > 0)
                     {
-                        @Html.ActionLink("Play a new Game of Five Card Draw", "Index", "DrawFive", new {@class = "btn-lg"})
+                        @Html.ActionLink("Play a new Game of Five Card Draw",
+                            "Index",
+                            "DrawFive",
+                            new { id = Model.UserId }, null)
+                        
                     }
                     <br />
                     <div class="text-center bg-info">
@@ -189,19 +189,32 @@
                         <br />
                         @if (@ViewBag.DidYouWin)
                         {
-                            <h1 class="glyphicon glyphicon-thumbs-up"> @ViewBag.WinningHand  @ViewBag.Message </h1>
+                            <h3> @*class="glyphicon glyphicon-thumbs-up">*@
+                                @ViewBag.WinningHand
+                                @ViewBag.Message
+                                @ViewBag.RemainingCreditsMessage
+                            </h3>
                         }
                         else
                         {
-                            <h3> Sorry, you lost.  You need a pair of Jacks or better to win.  Please try again. </h3>
+                            @Html.HiddenFor(m => Model.DiscardCount)
+                            @Html.HiddenFor(m => Model.UserId)
+                            @Html.HiddenFor(m => Model.Credits)
+                            <h3> Sorry, you lost.  You need a pair of Jacks or better to win.  
+                                Please try again. @ViewBag.RemainingCreditsMessage
+                            </h3>
                         }
                         <br />
+
 
                     </div>
                 }
                 else
                 {
-                    <input type="submit" value="Draw new cards or Stay" class="btn btn-default btn-success" />
+                    if (@Model.Credits > 0)
+                    {
+                        <input type="submit" value="Draw new cards or Stay" class="btn btn-default btn-success"/>
+                    }
                 }
             }
 
@@ -215,15 +228,23 @@
 
 
     
-    @Scripts.Render("~/bundles/jquery")
+ 
     <script>
         $().ready(function() {
-            if(document.referrer != 'http://localhost:8181/'){ 
+            if (document.referrer != 'http://localhost:8181/') {
                 history.pushState(null, null, 'DoNotBeACheater_BackButtonIsDisabled');
-                window.addEventListener('popstate', function () {
-                    history.pushState(null, null, 'DoNotBeACheater_BackButtonIsDisabled');
-                });
+                window.addEventListener('popstate',
+                    function() {
+                        history.pushState(null, null, 'DoNotBeACheater_BackButtonIsDisabled');
+                    });
             }
         });
+
+        @*$(function () {
+            var credits = 'You have ' +  @Html.DisplayFor(model => model.Credits) + ' Credits left';
+            $("#GameCreditsDiv").html(credits);
+        });*@
+
+
     </script>
 }

@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h3>Select the user that you wish to play as or create your own</h3>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -29,9 +29,9 @@
         @Html.DisplayFor(modelItem => item.Credits)
     </td>
     <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
-        @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
+        @Html.ActionLink("Edit", "Edit", "UserCredits", new { id = item.UserId }, null) |
+        @Html.ActionLink("Select Player", "Details", "UserCredits", new { id = item.UserId }, null) |
+        @Html.ActionLink("Delete", "Delete", "UserCredits", new { id = item.UserId }, null)
     </td>
 </tr>
 }

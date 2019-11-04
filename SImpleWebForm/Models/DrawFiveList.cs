@@ -2,7 +2,7 @@
 
 namespace SimpleWebForm.Models
 {
-    public class DrawFiveList
+    public class DrawFiveList : UserCredit
     {
         public int DiscardCount { get; set; }
         public List<DrawFiveClass> DrawList { get; set; }

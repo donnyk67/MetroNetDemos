@@ -6,38 +6,56 @@ using SimpleWebForm.ControllerHelpers;
 using SimpleWebForm.Models;
 using SimpleWebForm.StaticHelpers;
 
+
 namespace SimpleWebForm.Controllers
 {
+    
+
     public class DrawFiveController : Controller
     {
         // ReSharper disable once NotAccessedField.Local
         private readonly IPlayingCardFactory _pcf;
         private IHelperClass Helper { get; set; }
 
+        private DrawFiveEntities db = new DrawFiveEntities();
+
         public DrawFiveController(IPlayingCardFactory pcf, IHelperClass helper)
         {
             _pcf = pcf;
             Helper = helper;
         }
+
         // GET: DrawFive
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
-            if (GameCredits.GetUserCredits() == 0)
+            var db = new DrawFiveEntities();
+            var user = db.UserCredits.Find(id);
+            if (string.IsNullOrEmpty(id))
             {
-                //Redirect to Credits view to by more credits
-                return Redirect("http://www.Google.com");
+                
+                return View("../UserCredits/Index", db.UserCredits.ToList());
             }
             else
             {
-                //if (GameCredits.CurrentCredits < 0) GameCredits.CurrentCredits = 0;
-
-                var dfl = new DrawFiveList
+                if (GameCredits.GetUserCredits(id) == 0)
                 {
-                    DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
-                };
-                ViewBag.Reset = false;
-                return View(dfl);
+                    //Redirect to Credits view to by more credits
+                    return View("../UserCredits/Index", db.UserCredits.ToList());
+                }
+                else
+                {
+                    var dfl = new DrawFiveList
+                    {
+                        DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList(),
+                        UserId = id,
+                        Credits = user.Credits
+
+                    };
+                    ViewBag.Reset = false;
+                    return View(dfl);
+                }
             }
+           
 
         }
 
@@ -47,6 +65,7 @@ namespace SimpleWebForm.Controllers
         public ActionResult Index(DrawFiveList draw)
         {
             var curHand = draw.DrawList;
+            draw.DiscardCount = curHand.Count(x => x.Discard);
 
             var returnList = new DrawFiveList();
             returnList.DrawList = new List<DrawFiveClass>();
@@ -58,6 +77,8 @@ namespace SimpleWebForm.Controllers
             var sortedList = returnList.DrawList.OrderBy(x => x.OverAllHierarchyCardValue).ToList();
 
             returnList.DrawList = sortedList;
+            returnList.UserId = draw.UserId;
+            returnList.Credits = draw.Credits;
             ViewBag.Reset = true;
             ModelState.Clear();
             
@@ -67,6 +88,26 @@ namespace SimpleWebForm.Controllers
             ViewBag.Message = didYouWin.Message;
             ViewBag.WinningHand = didYouWin.WinningHand;
             ViewBag.CreditsWon = didYouWin.CreditsWon;
+
+            if (didYouWin.DidYouWin)
+            {
+                GameCredits.UpdateUserCredits((int)ViewBag.CreditsWon, draw.UserId);
+            }
+            else
+            {
+                GameCredits.UpdateUserCredits(-1, draw.UserId);
+            }
+
+            if (db.UserCredits != null)
+            {
+                var updatedCredits = db.UserCredits.Find(draw.UserId).Credits;
+                ViewBag.RemainingCreditsMessage = $"{draw.UserId} you have {updatedCredits} credits left.";
+            }
+            else
+            {
+                ViewBag.RemainingCreditsMessage = "Error";
+            }
+
             return View(returnList);
         }
         
@@ -86,10 +127,10 @@ namespace SimpleWebForm.Controllers
 
 
 
-        public ActionResult BuyMoreCredits()
+        public ActionResult BuyMoreCredits(string userId)
         {
             //For now just simply add 5 more credits
-            GameCredits.ResetUserCredits();
+            GameCredits.ResetUserCredits(userId);
            
                 var dfl = new DrawFiveList
                 {
@@ -99,6 +140,32 @@ namespace SimpleWebForm.Controllers
                 return View("Index", dfl);
 
         }
+
+
+
+
+        public ActionResult StartNewGame(string id)
+        {
+
+            var user = db.UserCredits.Find(id);
+
+            if (user != null)
+            {
+                var dfl = new DrawFiveList
+                {
+                    UserId = user.UserId,
+                    Credits = user.Credits,
+                    DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
+                };
+                ViewBag.Reset = false;
+                return View("Index", dfl);
+            }
+
+            return View("Error");
+
+        }
+
+
 
     }
 }
