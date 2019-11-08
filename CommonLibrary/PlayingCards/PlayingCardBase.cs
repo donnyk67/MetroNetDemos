@@ -2,7 +2,7 @@
 
 namespace CommonLibrary.PlayingCards
 {
-    public class PlayingCardBase
+    public abstract class PlayingCardBase
     {
         public string SuitName { get; set; }
         public int SuitHierarchyValue { get; set; }
