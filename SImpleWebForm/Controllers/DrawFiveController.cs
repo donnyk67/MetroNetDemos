@@ -126,24 +126,6 @@ namespace SimpleWebForm.Controllers
 
 
 
-
-        public ActionResult BuyMoreCredits(string userId)
-        {
-            //For now just simply add 5 more credits
-            GameCredits.ResetUserCredits(userId);
-           
-                var dfl = new DrawFiveList
-                {
-                    DrawList = Helper.GetFiveNewCards().OrderBy(x => x.OverAllHierarchyCardValue).ToList()
-                };
-                ViewBag.Reset = false;
-                return View("Index", dfl);
-
-        }
-
-
-
-
         public ActionResult StartNewGame(string id)
         {
 

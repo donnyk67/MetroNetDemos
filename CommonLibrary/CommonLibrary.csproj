@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DemoVideo.mp4" />
+    <Content Include="DrawFiveDemoVideo.mp4" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

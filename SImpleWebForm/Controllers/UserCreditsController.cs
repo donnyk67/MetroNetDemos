@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SimpleWebForm.Models;
 
@@ -12,12 +9,12 @@ namespace SimpleWebForm.Controllers
 {
     public class UserCreditsController : Controller
     {
-        private DrawFiveEntities db = new DrawFiveEntities();
+        private readonly DrawFiveEntities _db = new DrawFiveEntities();
 
         // GET: UserCredits
         public ActionResult Index()
         {
-            return View(db.UserCredits.ToList());
+            return View(_db.UserCredits.ToList());
         }
 
         // GET: UserCredits/Details/5
@@ -27,7 +24,7 @@ namespace SimpleWebForm.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserCredit userCredit = db.UserCredits.Find(id);
+            UserCredit userCredit = _db.UserCredits.Find(id);
             if (userCredit == null)
             {
                 return HttpNotFound();
@@ -52,7 +49,7 @@ namespace SimpleWebForm.Controllers
             TempData["UserExists"] = false;
 
 
-            var userExists = db.UserCredits.Find(userCredit.UserId);
+            var userExists = _db.UserCredits.Find(userCredit.UserId);
                 if (userExists != null)
                 {
                  TempData["UserExists"] = true;
@@ -62,8 +59,8 @@ namespace SimpleWebForm.Controllers
 
             if (ModelState.IsValid)
             {
-                db.UserCredits.Add(userCredit);
-                db.SaveChanges();
+                _db.UserCredits.Add(userCredit);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -77,7 +74,7 @@ namespace SimpleWebForm.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserCredit userCredit = db.UserCredits.Find(id);
+            UserCredit userCredit = _db.UserCredits.Find(id);
             if (userCredit == null)
             {
                 return HttpNotFound();
@@ -94,8 +91,8 @@ namespace SimpleWebForm.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(userCredit).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(userCredit).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(userCredit);
@@ -108,7 +105,7 @@ namespace SimpleWebForm.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserCredit userCredit = db.UserCredits.Find(id);
+            UserCredit userCredit = _db.UserCredits.Find(id);
             if (userCredit == null)
             {
                 return HttpNotFound();
@@ -121,9 +118,9 @@ namespace SimpleWebForm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            UserCredit userCredit = db.UserCredits.Find(id);
-            db.UserCredits.Remove(userCredit);
-            db.SaveChanges();
+            UserCredit userCredit = _db.UserCredits.Find(id);
+            _db.UserCredits.Remove(userCredit ?? throw new InvalidOperationException());
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -131,7 +128,7 @@ namespace SimpleWebForm.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
