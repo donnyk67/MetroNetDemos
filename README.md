@@ -1,5 +1,5 @@
 # MetroNetDemos
-5 projects in the solutios and a brief demo video.
+5 projects in the solution and a brief demo video.
 Please play the mp4 file called "DemoVideo" in the CommonLibrary project.
 Set whatever project you want to test as the start project, but note that the API project should be ran in Swagger.
 To do this just type in "/swagger/ui/index" after the localhost url.
